@@ -1,0 +1,192 @@
+{
+	"autoConfigPreferences": {
+		"deleteInputFileAfterProcessing": false,
+		"startServerAfterConfiguration": true,
+		"consoleLogOutput": {
+			"show": "all",
+			"pauseOnErrorSeconds": 30
+		}
+	},
+
+	"serverSetup": {
+		"server": {
+			"type": "first",
+			"name": "Domino",
+			"domainName": "Engage",
+			"title": "Demo server for Engage 2022",
+			"password": null,
+			"minPasswordLength": 3,
+			"useExistingServerID": false,
+			"serverTasks": "Replica,Router,Update,AMgr,Adminp,Sched,CalConn,RnRMgr"
+		},
+		"network": {
+			"hostName": "domino.engage-demo.com",
+			"enablePortEncryption": true,
+			"enablePortCompression": true
+		},
+		"org": {
+			"orgName": "Engage",
+			"certifierPassword": "engage2022"
+		},
+		"admin": {
+			"firstName": "Don",
+			"lastName": "Admin",
+			"useExistingAdminID": false,
+			"password": "engage2022",
+			"IDFilePath": "C:\\Program Files\\HCL\\Domino\\Data\\dadmin.id"
+		},
+		"notesINI": {
+			"LOG_REPLICATION": "1",
+			"LOG_SESSIONS": "1",
+			"Create_R12_databases": "1",
+			"Create_R85_log": "1",
+			"ADMIN_CLIENT_SKIP_DOMINO": "1",
+			"DAOS_ENCRYPT_NLO": "0",
+			"SETUPLEAVESERVERTASKS": "1",
+			"SERVER_UPGRADE_NO_DIRECTORY_UPGRADE_PROMPT": "1",
+			"FT_FLY_INDEX_OFF": "1",
+			"UPDATE_FULLTEXT_THREAD": "1",
+			"FTG_USE_SYS_MEMORY": "1",
+			"SERVER_RESTART_DELAY": "1"
+		},
+		"security": {
+			"ACL": {
+				"prohibitAnonymousAccess": true,
+				"addLocalDomainAdmins": true
+			}
+		},
+		"registerUsers": {
+			"defaults": {
+				"saveIDToPersonDocument": false,
+				"password": "engage2022",
+				"mailTemplatePath": "mail12.ntf",
+				"enableFullTextIndex": false,
+				"certificateExpirationMonths": 24
+			},
+			"users": [
+				{
+					"firstName": "Gloriana",
+					"lastName": "Mossop",
+					"mailFilePath": "mail/gmossop.nsf",
+					"internetAddress": "gloriana.mossop@engage-demo.com"
+				},
+				{
+					"firstName": "Giraud",
+					"lastName": "Aubry",
+					"mailFilePath": "mail/gaubry.nsf",
+					"internetAddress": "giraud.aubry@engage-demo.com"
+				},
+				{
+					"firstName": "Natalie",
+					"lastName": "Weatherhead",
+					"mailFilePath": "mail/nweatherhead.nsf",
+					"internetAddress": "Natalie.Weatherhead@engage-demo.com"
+				},
+				{
+					"firstName": "Marcus",
+					"lastName": "Whal",
+					"mailFilePath": "mail/mwhal.nsf",
+					"internetAddress": "Marcus.Whal@engage-demo.com"
+				},
+				{
+					"firstName": "Emily",
+					"lastName": "Favel",
+					"mailFilePath": "mail/efavel.nsf",
+					"internetAddress": "emily.favel@engage-demo.com"
+				},
+				{
+					"firstName": "Gene",
+					"lastName": "Kim",
+					"mailFilePath": "mail/gkim.nsf",
+					"internetAddress": "gene.kim@engage-demo.com"
+				},
+				{
+					"firstName": "Patrick",
+					"lastName": "O'Neil",
+					"mailFilePath": "mail/poneil.nsf",
+					"internetAddress": "patrick.oneil@engage-demo.com"
+				},
+				{
+					"firstName": "Molli",
+					"lastName": "Melone",
+					"mailFilePath": "mail/mmelone.nsf",
+					"internetAddress": "molli.melone@engage-demo.com"
+				},
+				{
+					"firstName": "Jason",
+					"lastName": "Keep",
+					"mailFilePath": "mail/jkeep.nsf",
+					"internetAddress": "jason.keep@engage-demo.com"
+				}
+			]
+		}
+	},
+
+	"IDVault": {
+		"name": "O=Engage",
+		"description": "Engage Vault",
+		"IDFile": "EngageVault.id",
+		"IDPassword": "engage2022",
+		"path": "IBM_ID_VAULT/EngageVault.nsf",
+		"passwordReset": {
+			"helpText": "Call so and so for help resetting password"
+		},
+		"securitySettingsPolicy": {
+			"name": "Engage Vault Security Settings Policy",
+			"description": "Engage Vault Security Settings"
+		},
+		"masterPolicy": {
+			"description": "Engage Vault Master Policy Description"
+		}
+	},
+	
+	"appConfiguration": {
+
+		"databases": [
+			{
+				"filePath": "names.nsf",
+				"action": "update",
+				"documents": [
+				{
+					"action": "update",
+					"findDocument": {
+					"Type": "Server",
+					"ServerName": "CN=Domino/O=Engage"
+					},
+					"items": {
+							  "Administrator":"LocalDomainAdmins",
+							  "CreateAccess":"LocalDomainAdmins",
+							  "ReplicaAccess": [
+								"LocalDomainAdmins",
+								"LocalDomainServers"
+							  ],
+							  "TemplateAccess":"LocalDomainAdmins"
+					}
+				},
+				
+				{
+					"action": "create",
+					"computeWithForm": true,
+					"items": {
+						"Form": "Program",
+						"Enabled":"1",
+						"Comments":"update all views of all mail dbs and refresh ft-Index older than 7 days",
+						"CmdLine":"mail -compactthreads 0 -updallthreads 8 -ftiThreads 8 -ftiNDays 7",
+						"Interval": 0,
+						"LocalAdmin":"LocalDomainAdmins",
+						"Owner":"LocalDomainAdmins",
+						"Program":"dbmt",
+						"Schedule": {
+							"type":"datetime",
+							"value":"T060000,00"
+							},
+						"Source":"CN=Domino/O=Engage",
+						"Type": "Program",
+						"WeekDays": [ "2", "3", "4", "5", "6" ]				
+					}
+				}
+			]
+      }
+    ]
+  }
+}
