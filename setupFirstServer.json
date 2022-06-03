@@ -123,7 +123,7 @@
 	},
 
 	"IDVault": {
-		"name": "O=Engage",
+		"name": "O=EngageVault",
 		"description": "Engage Vault",
 		"IDFile": "EngageVault.id",
 		"IDPassword": "engage2022",
